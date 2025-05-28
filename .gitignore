@@ -3,3 +3,5 @@ compiler/build
 compiler/generated
 .cache
 compile_commands.json
+*.out
+ifcc-test-output
