@@ -1,6 +1,7 @@
 ifcc
 compiler/build
 compiler/generated
+compiler/.antlr
 .cache
 compile_commands.json
 *.out

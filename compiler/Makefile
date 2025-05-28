@@ -69,3 +69,6 @@ gui:
 clean:
 	rm -rf build generated
 	rm -f ifcc
+
+test:
+	python3 ../ifcc-test.py ../testfiles/ --verbose
