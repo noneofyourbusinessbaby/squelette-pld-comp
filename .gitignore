@@ -1,3 +1,5 @@
 ifcc
 compiler/build
 compiler/generated
+.cache
+compile_commands.json

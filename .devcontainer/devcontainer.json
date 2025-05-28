@@ -1,14 +1,25 @@
 {
   "name": "ANTLR4 Dev",
-  "image": "ubuntu-antlr4:latest",
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash"
+  "image": "ubuntu-antlr4:dev",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "clangd.trace.server": "verbose",
+        
+  "clangd.arguments": [
+    "--query-driver=",
+    "--header-insertion=never",
+    "--compile-commands-dir=${workspaceFolder}/"
+]
+
+      },
+      "extensions": [
+        "mike-lischke.vscode-antlr4",
+        "llvm-vs-code-extensions.vscode-clangd"
+      ]
+    }
   },
-  "extensions": [
-    "ms-vscode.cpptools",
-    "mike-lischke.vscode-antlr4",
-    "ms-vscode.cmake-tools"
-  ],
 "mounts": ["type=bind,source=${localWorkspaceFolder},target=/app"],
 "remoteUser": "root",
 "workspaceFolder": "/app"

@@ -18,7 +18,7 @@ RUN mkdir -p /root/antlr4-install \
     && unzip antlr4-cpp-runtime-4.13.2-source.zip \
     && mkdir build \
     && cd build \
-    && cmake -DCMAKE_INSTALL_PREFIX:PATH=/root/antlr4-install .. \
+    && cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_INSTALL_PREFIX:PATH=/root/antlr4-install .. \
     && make -j8 \
     && make install
 
