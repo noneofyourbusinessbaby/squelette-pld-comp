@@ -25,9 +25,7 @@
             },
       "extensions": [
         "mike-lischke.vscode-antlr4",
-        "ms-vscode.cpptools",
-        "ms-vscode.cpptools-extension-pack",
-        "llvm-vs-code-extensions.vscode-clangd"
+        "ms-vscode.cpptools-extension-pack"
       ]
     }
   },
