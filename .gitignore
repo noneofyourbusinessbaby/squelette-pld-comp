@@ -6,3 +6,4 @@ compiler/.antlr
 compile_commands.json
 *.out
 ifcc-test-output
+divers
