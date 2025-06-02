@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include <any>
+
 class CodeVarVisitor : public ifccBaseVisitor {
 
 private:
@@ -21,7 +23,7 @@ private:
   }
 
 public:
-  virtual std::any visitProg(ifccParser::ProgContext *ctx) override {
+  virtual std::any visitProg(ifccParser::ProgContext *ctx) {
     // Loop through all core in context
     for (ifccParser::CoreContext *coreCtx : ctx->core()) {
       this->visit(coreCtx);
@@ -31,8 +33,7 @@ public:
     return 0;
   }
 
-  virtual std::any
-  visitReturn_stmt(ifccParser::Return_stmtContext *ctx) override {
+  virtual std::any visitReturn_stmt(ifccParser::Return_stmtContext *ctx) {
     // Check that the variable is defined
     if (ctx->VARIABLE() != nullptr) {
       std::string varName = ctx->VARIABLE()->getText();
@@ -41,7 +42,7 @@ public:
     return 0;
   }
 
-  virtual std::any visitCore(ifccParser::CoreContext *ctx) override {
+  virtual std::any visitCore(ifccParser::CoreContext *ctx) {
     // Visit all declarations in the core
     if (ctx->declaration() != nullptr) {
       this->visit(ctx->declaration());
@@ -53,8 +54,7 @@ public:
     return 0;
   }
 
-  virtual std::any
-  visitDeclaration(ifccParser::DeclarationContext *ctx) override {
+  virtual std::any visitDeclaration(ifccParser::DeclarationContext *ctx) {
     /*
       declaration: INT VARIABLE '=' CONST ';'
               | INT VARIABLE '=' VARIABLE ';'
