@@ -4,21 +4,21 @@ axiom : prog EOF ;
 
 prog : 'int' 'main' '(' ')' '{' core * return_stmt '}' ;
 
-return_stmt: RETURN CONST ';'
-            | RETURN VARIABLE ';'
-            ;
+return_stmt: RETURN CONST ';' # return_const
+            | RETURN VARIABLE ';' # return_var
+            ; 
 
-core : declaration
-    | assignment
+core : declaration # core_declaration
+      | assignment # core_assignment
     ;
 
-declaration: INT VARIABLE '=' CONST ';'
-            | INT VARIABLE '=' VARIABLE ';'
-            | INT VARIABLE ';'
+declaration: INT VARIABLE '=' CONST ';' # declare_const
+            | INT VARIABLE '=' VARIABLE ';' # declare_var
+            | INT VARIABLE ';' # declare_empty
             ;
 
-assignment: VARIABLE '=' CONST ';'
-            | VARIABLE '=' VARIABLE ';'
+assignment: VARIABLE '=' CONST ';' # assign_const
+            | VARIABLE '=' VARIABLE ';' # assign_var
             ;
 
 RETURN : 'return' ;

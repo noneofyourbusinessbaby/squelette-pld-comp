@@ -8,22 +8,26 @@
 #include "generated/ifccLexer.h"
 #include "generated/ifccParser.h"
 
-#include "CodeGenVisitor.h"
-#include "var/CodeVarVisitor.h"
+#include "var/VariableVisitor.h"
 
 using namespace antlr4;
 using namespace std;
 
-int main(int argn, const char **argv) {
+int main(int argn, const char **argv)
+{
   stringstream in;
-  if (argn == 2) {
+  if (argn == 2)
+  {
     ifstream lecture(argv[1]);
-    if (!lecture.good()) {
+    if (!lecture.good())
+    {
       cerr << "error: cannot read file: " << argv[1] << endl;
       exit(1);
     }
     in << lecture.rdbuf();
-  } else {
+  }
+  else
+  {
     cerr << "usage: ifcc path/to/file.c" << endl;
     exit(1);
   }
@@ -38,13 +42,14 @@ int main(int argn, const char **argv) {
   ifccParser parser(&tokens);
   tree::ParseTree *tree = parser.axiom();
 
-  if (parser.getNumberOfSyntaxErrors() != 0) {
+  if (parser.getNumberOfSyntaxErrors() != 0)
+  {
     cerr << "error: syntax error during parsing" << endl;
     exit(1);
   }
 
-  CodeGenVisitor v;
-  CodeVarVisitor varVisitor;
+  // CodeGenVisitor v;
+  VariableVisitor varVisitor;
   varVisitor.visit(tree);
   // v.visit(tree);
 
