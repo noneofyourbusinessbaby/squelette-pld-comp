@@ -6,6 +6,7 @@
 // Placeholder for variable metadata
 struct VarMetaData {
   // Add metadata fields here in the future
+  int occurrences = 0; // Example field for tracking occurrences
 };
 
 class VarIndex {
@@ -16,6 +17,8 @@ public:
       int idx = nextIndex_;
       nextIndex_ += 4;
       indices_[name] = idx;
+      // create metadata entry
+      metadata_[name] = VarMetaData();
       std::cout << "Index: " << idx << " Name: " << name << std::endl;
     }
   }
@@ -37,7 +40,15 @@ public:
     return -1;
   }
 
+  void incrementOccurrences(const std::string &name) {
+    if (metadata_.find(name) == metadata_.end()) {
+      metadata_[name] = VarMetaData();
+    }
+    metadata_[name].occurrences++;
+  }
+
 private:
   std::unordered_map<std::string, int> indices_;
+  std::unordered_map<std::string, VarMetaData> metadata_;
   int nextIndex_ = 0;
 };
