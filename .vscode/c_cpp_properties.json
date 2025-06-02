@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/root/antlr4-install/include/antlr4-runtime"
+                "/root/antlr4-install/include/antlr4-runtime/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

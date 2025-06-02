@@ -5,17 +5,28 @@
     "vscode": {
       "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",
-        "clangd.trace.server": "verbose",
-        
-  "clangd.arguments": [
-    "--query-driver=",
-    "--header-insertion=never",
-    "--compile-commands-dir=${workspaceFolder}/"
-]
-
-      },
+        "c_cpp_properties" : {
+              "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/root/antlr4-install/include/antlr4-runtime/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+        }
+            },
       "extensions": [
         "mike-lischke.vscode-antlr4",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
         "llvm-vs-code-extensions.vscode-clangd"
       ]
     }
