@@ -4,18 +4,22 @@
 #include <unordered_map>
 
 // Placeholder for variable metadata
-struct VarMetaData {
+struct VarMetaData
+{
   // Add metadata fields here in the future
   int occurrences = 0; // Example field for tracking occurrences
 };
 
-class VarIndex {
+class VarIndex
+{
 public:
   // Set or update a variable, assign index if new
-  void setVariable(const std::string &name) {
-    if (indices_.find(name) == indices_.end()) {
+  void setVariable(const std::string &name)
+  {
+    if (indices_.find(name) == indices_.end())
+    {
       int idx = nextIndex_;
-      nextIndex_ += 4;
+      nextIndex_ += 1;
       indices_[name] = idx;
       // create metadata entry
       metadata_[name] = VarMetaData();
@@ -24,7 +28,8 @@ public:
   }
 
   // Check if a variable exists
-  bool hasVariable(const std::string &name) const {
+  bool hasVariable(const std::string &name) const
+  {
     return indices_.find(name) != indices_.end();
   }
 
@@ -32,19 +37,39 @@ public:
   void removeVariable(const std::string &name) { indices_.erase(name); }
 
   // Get the index of a variable, returns -1 if not found
-  int getIndex(const std::string &name) const {
+  int getIndex(const std::string &name) const
+  {
     auto it = indices_.find(name);
-    if (it != indices_.end()) {
+    if (it != indices_.end())
+    {
       return it->second;
     }
     return -1;
   }
 
-  void incrementOccurrences(const std::string &name) {
-    if (metadata_.find(name) == metadata_.end()) {
+  void incrementOccurrences(const std::string &name)
+  {
+    if (metadata_.find(name) == metadata_.end())
+    {
       metadata_[name] = VarMetaData();
     }
     metadata_[name].occurrences++;
+  }
+
+  void associateDownwardGrowingIndexForEachVariableInMap()
+  {
+    // get the size of the indices map
+    int max_index = indices_.size() * 4;
+
+    // iterate through the indices map each index = max_index - current_index * 4
+    for (const auto &pair : indices_)
+    {
+      const std::string &name = pair.first;
+      int current_index = pair.second;
+      int new_index = max_index - current_index * 4;
+      indices_[name] = new_index;
+      std::cout << "Updated Index: " << new_index << " Name: " << name << std::endl;
+    }
   }
 
 private:
