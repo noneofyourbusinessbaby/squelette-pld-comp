@@ -9,6 +9,8 @@
 #include "generated/ifccParser.h"
 
 #include "var/VariableVisitor.h"
+#include "var/VarIndex.h"
+#include "gen/CodeGenVisitor.h"
 
 using namespace antlr4;
 using namespace std;
@@ -51,7 +53,13 @@ int main(int argn, const char **argv)
   // CodeGenVisitor v;
   VariableVisitor varVisitor;
   varVisitor.visit(tree);
-  // v.visit(tree);
+
+  VarIndex* varIndex = varVisitor.getVarIndex();
+  varIndex->associateDownwardGrowingIndexForEachVariableInMap();
+
+  CodeGenVisitor codeGenVisitor;
+  codeGenVisitor.setVarIndex(varIndex);
+  codeGenVisitor.visit(tree);
 
   return 0;
 }

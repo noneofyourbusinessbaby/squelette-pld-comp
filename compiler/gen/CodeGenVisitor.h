@@ -1,30 +1,49 @@
 #pragma once
 
 #include "antlr4-runtime.h"
-#include "generated/ifccBaseVisitor.h"
-#include "VarIndex.h"
+#include "../generated/ifccBaseVisitor.h"
+#include "../var/VarIndex.h"
 
 class CodeGenVisitor : public ifccBaseVisitor
 {
 private:
-        VarIndex varIndex;
+        VarIndex* varIndex;
 
 public:
-        void setVarIndex(const VarIndex &index)
+        void setVarIndex(VarIndex* index)
         {
                 this->varIndex = index;
         }
 
-        void moveVariableFromStackToEax(int index)
+        void moveVariableFromVariableOnStackToEax(int index)
         {
                 std::cout << "    movl -" << index << "(%rpb), %eax\n";
         }
 
-        void moveVariableFromEaxToStack(int index)
+        void moveVariableFromEaxToVariableOnStack(int index)
         {
                 std::cout << "    movl %eax, -" << index << "(%rpb)\n";
         }
+        void moveConstToVariableOnStack(int index, int constantValue)
+        {
+                std::cout << "    movl $" << constantValue << ", -" << index << "(%rpb)\n";
+        }
+        void affectVariableToVariable(std::string varNameBeingAffected, std::string varNameUsedForAffection)
+        {
+                // Move the value of the second variable to eax
+                int indexVarNameUsedForAffection = this->varIndex->getIndex(varNameUsedForAffection);
+                this->moveVariableFromVariableOnStackToEax(indexVarNameUsedForAffection);
 
+                // Than move eax to tne first variable
+                int indexVarNameBeingAffected = this->varIndex->getIndex(varNameBeingAffected);
+                this->moveVariableFromEaxToVariableOnStack(indexVarNameBeingAffected);
+        }
+        void affectConstToVariable(std::string varName, int constantValue)
+        {
+                int index = this->varIndex->getIndex(varName);
+                this->moveConstToVariableOnStack(index, constantValue);
+
+        }
         virtual antlrcpp::Any visitProg(ifccParser::ProgContext *ctx)
         {
 #ifdef __APPLE__
@@ -64,8 +83,8 @@ public:
                 std::string varName = ctx->VARIABLE()->getText();
 
                 // Get the index of the variable being returned
-                int index = this->varIndex.getIndex(varName);
-                this->moveVariableFromStackToEax(index);
+                int index = this->varIndex->getIndex(varName);
+                this->moveVariableFromVariableOnStackToEax(index);
 
                 return 0;
         }
@@ -86,13 +105,11 @@ public:
         {
                 // Get variable related information
                 std::string varName = ctx->VARIABLE()->getText();
-                int index = this->varIndex.getIndex(varName);
-
                 // Get the constant value
                 int constantValue = stoi(ctx->CONST()->getText());
 
-                std::cout << "    movl $" << constantValue << ", -" << index << "(%rpb)\n";
-
+                this->affectConstToVariable(varName, constantValue);
+                
                 return 0;
         }
 
@@ -102,13 +119,7 @@ public:
 
                 std::string varNameUsedForAffection = ctx->VARIABLE(1)->getText();
 
-                // Move the value of the second variable to eax
-                int indexVarNameUsedForAffection = this->varIndex.getIndex(varNameUsedForAffection);
-                this->moveVariableFromStackToEax(indexVarNameUsedForAffection);
-
-                // Than move eax to tne first variable
-                int indexVarNameBeingAffected = this->varIndex.getIndex(varNameBeingAffected);
-                this->moveVariableFromEaxToStack(indexVarNameBeingAffected);
+                this->affectVariableToVariable(varNameBeingAffected, varNameUsedForAffection);
 
                 return 0;
         }
@@ -120,22 +131,24 @@ public:
 
         virtual std::any visitAssign_const(ifccParser::Assign_constContext *ctx) override
         {
+                // Get variable related information
                 std::string varName = ctx->VARIABLE()->getText();
-                /*
-                        todo implement
-                */
+                // Get the constant value
+                int constantValue = stoi(ctx->CONST()->getText());
+                
+                this->affectConstToVariable(varName, constantValue);
+
                 return 0;
         }
 
         virtual std::any visitAssign_var(ifccParser::Assign_varContext *ctx) override
         {
-                std::string varName_0 = ctx->VARIABLE(0)->getText();
+                std::string varNameBeingAffected = ctx->VARIABLE(0)->getText();
 
-                std::string varName_1 = ctx->VARIABLE(1)->getText();
+                std::string varNameUsedForAffection = ctx->VARIABLE(1)->getText();
 
-                /*
-        todo implement
-*/
+                this->affectVariableToVariable(varNameBeingAffected, varNameUsedForAffection);
+
                 return 0;
         }
 };

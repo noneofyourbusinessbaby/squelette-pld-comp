@@ -16,6 +16,7 @@ private:
 
     bool deadlyError = false;
 
+
     void printErrorIfUsedVariableNotDefined(const std::string &varName, bool use = false)
     {
         if (!varIndex.hasVariable(varName))
@@ -49,6 +50,12 @@ private:
     }
 
 public:
+
+    VarIndex*  getVarIndex()
+    {
+        return &varIndex;
+    }
+    
     virtual std::any visitProg(ifccParser::ProgContext *ctx)
     {
         // Loop through all core in context
@@ -119,7 +126,6 @@ public:
     {
         std::string varName = ctx->VARIABLE()->getText();
         this->printErrorIfUsedVariableNotDefined(varName);
-        // todo var is used increment
         return 0;
     }
 

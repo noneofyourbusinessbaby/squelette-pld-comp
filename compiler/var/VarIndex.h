@@ -74,6 +74,7 @@ public:
 
 private:
   std::unordered_map<std::string, int> indices_;
+  std::unordered_map<std::string, int> affected_variables_indices_;
   std::unordered_map<std::string, VarMetaData> metadata_;
   int nextIndex_ = 0;
 };
