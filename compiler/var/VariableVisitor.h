@@ -34,18 +34,23 @@ private:
         }
     }
 
-    void printErrorIfVariableAlreadyDeclared(const std::string &varName)
+    void printErrorIfVariableAlreadyDeclared(const std::string &varName, bool empty = false)
     {
         if (varIndex.hasVariable(varName))
         {
             std::cerr << "Error: Variable '" << varName
                       << "' is already declared.\n";
+            this->deadlyError = true;
         }
         else
         {
             // Set the variable in the index
             varIndex.setVariable(varName);
             std::cout << "Declared variable: " << varName << std::endl;
+            if (empty == false) {
+                // Set the variable in the stack dedicated index
+                varIndex.setVariableAffectedVaribleIndex(varName);
+            }
         }
     }
 
@@ -117,7 +122,7 @@ public:
     {
         std::string varName = ctx->VARIABLE()->getText();
 
-        this->printErrorIfVariableAlreadyDeclared(varName);
+        this->printErrorIfVariableAlreadyDeclared(varName, true);
 
         return 0;
     }

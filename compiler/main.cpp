@@ -55,7 +55,7 @@ int main(int argn, const char **argv)
   varVisitor.visit(tree);
 
   VarIndex* varIndex = varVisitor.getVarIndex();
-  varIndex->associateDownwardGrowingIndexForEachVariableInMap();
+  varIndex->associateDownwardGrowingIndexForEachVariableInAffectedVariableIndex();
 
   CodeGenVisitor codeGenVisitor;
   codeGenVisitor.setVarIndex(varIndex);

@@ -39,8 +39,8 @@ public:
   // Get the index of a variable, returns -1 if not found
   int getIndex(const std::string &name) const
   {
-    auto it = indices_.find(name);
-    if (it != indices_.end())
+    auto it = affected_variables_indices_.find(name);
+    if (it != affected_variables_indices_.end())
     {
       return it->second;
     }
@@ -56,19 +56,32 @@ public:
     metadata_[name].occurrences++;
   }
 
-  void associateDownwardGrowingIndexForEachVariableInMap()
+  void associateDownwardGrowingIndexForEachVariableInAffectedVariableIndex()
   {
     // get the size of the indices map
-    int max_index = indices_.size() * 4;
+    int max_index = affected_variables_indices_.size() * 4;
 
     // iterate through the indices map each index = max_index - current_index * 4
-    for (const auto &pair : indices_)
+    for (const auto &pair : affected_variables_indices_)
     {
       const std::string &name = pair.first;
       int current_index = pair.second;
       int new_index = max_index - current_index * 4;
-      indices_[name] = new_index;
+      affected_variables_indices_[name] = new_index;
       std::cout << "Updated Index: " << new_index << " Name: " << name << std::endl;
+    }
+  }
+
+  void setVariableAffectedVaribleIndex(const std::string &name)
+  {
+    if (affected_variables_indices_.find(name) == affected_variables_indices_.end())
+    {
+      int idx = affected_variables_nextIndex_;
+      affected_variables_nextIndex_ += 1;
+      affected_variables_indices_[name] = idx;
+      // create metadata entry
+      metadata_[name] = VarMetaData();
+      std::cout << "Index for stack variables: " << idx << " Name: " << name << std::endl;
     }
   }
 
@@ -76,5 +89,7 @@ private:
   std::unordered_map<std::string, int> indices_;
   std::unordered_map<std::string, int> affected_variables_indices_;
   std::unordered_map<std::string, VarMetaData> metadata_;
+
   int nextIndex_ = 0;
+  int affected_variables_nextIndex_ = 0;
 };
