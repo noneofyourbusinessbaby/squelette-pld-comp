@@ -17,16 +17,16 @@ public:
 
         void moveVariableFromVariableOnStackToEax(int index)
         {
-                std::cout << "    movl -" << index << "(%rpb), %eax\n";
+                std::cout << "    movl -" << index << "(%rbp), %eax\n";
         }
 
         void moveVariableFromEaxToVariableOnStack(int index)
         {
-                std::cout << "    movl %eax, -" << index << "(%rpb)\n";
+                std::cout << "    movl %eax, -" << index << "(%rbp)\n";
         }
         void moveConstToVariableOnStack(int index, int constantValue)
         {
-                std::cout << "    movl $" << constantValue << ", -" << index << "(%rpb)\n";
+                std::cout << "    movl $" << constantValue << ", -" << index << "(%rbp)\n";
         }
         void affectVariableToVariable(std::string varNameBeingAffected, std::string varNameUsedForAffection)
         {
@@ -157,12 +157,12 @@ public:
 
 Une affectation avec une constante :
 
-movl $CONST, -INDEX(%rpb)
+movl $CONST, -INDEX(%rbp)
 
 Une affectation avec une variable :
 
-movl -INDEX_USED_FOR_AFFECTION(%rpb), %eax
-movl %eax, -INDEX_BEING_AFFECTED(%rpb)
+movl -INDEX_USED_FOR_AFFECTION(%rbp), %eax
+movl %eax, -INDEX_BEING_AFFECTED(%rbp)
 
 
 une décalaration sans variable/const : skip
@@ -172,6 +172,6 @@ une déclaration avec une variable ou bien une const : idem
 
 
 return statement avec une variable :
-movl -INDEX(%rpb), %eax
+movl -INDEX(%rbp), %eax
 
 */

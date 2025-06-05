@@ -23,7 +23,7 @@ public:
       indices_[name] = idx;
       // create metadata entry
       metadata_[name] = VarMetaData();
-      std::cout << "Index: " << idx << " Name: " << name << std::endl;
+      // std::cout << "Index: " << idx << " Name: " << name << std::endl;
     }
   }
 
@@ -68,7 +68,7 @@ public:
       int current_index = pair.second;
       int new_index = max_index - current_index * 4;
       affected_variables_indices_[name] = new_index;
-      std::cout << "Updated Index: " << new_index << " Name: " << name << std::endl;
+      // std::cout << "Updated Index: " << new_index << " Name: " << name << std::endl;
     }
   }
 
@@ -81,7 +81,7 @@ public:
       affected_variables_indices_[name] = idx;
       // create metadata entry
       metadata_[name] = VarMetaData();
-      std::cout << "Index for stack variables: " << idx << " Name: " << name << std::endl;
+      // std::cout << "Index for stack variables: " << idx << " Name: " << name << std::endl;
     }
   }
 

@@ -54,6 +54,10 @@ int main(int argn, const char **argv)
   VariableVisitor varVisitor;
   varVisitor.visit(tree);
 
+  if (varVisitor.getDeadlyError() == true) {
+    return 1;
+  }
+
   VarIndex* varIndex = varVisitor.getVarIndex();
   varIndex->associateDownwardGrowingIndexForEachVariableInAffectedVariableIndex();
 

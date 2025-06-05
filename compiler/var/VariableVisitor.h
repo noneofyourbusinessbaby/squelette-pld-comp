@@ -21,7 +21,7 @@ private:
     {
         if (!varIndex.hasVariable(varName))
         {
-            std::cerr << "Error: Variable '" << varName << "' is not defined.\n";
+            // std::cerr << "Error: Variable '" << varName << "' is not defined.\n";
             this->deadlyError = true;
             return;
         }
@@ -30,7 +30,7 @@ private:
         {
             // Increment the usage count of the variable
             varIndex.incrementOccurrences(varName);
-            std::cout << "Used variable: " << varName << std::endl;
+            // std::cout << "Used variable: " << varName << std::endl;
         }
     }
 
@@ -38,15 +38,15 @@ private:
     {
         if (varIndex.hasVariable(varName))
         {
-            std::cerr << "Error: Variable '" << varName
-                      << "' is already declared.\n";
+            // std::cerr << "Error: Variable '" << varName
+            //           << "' is already declared.\n";
             this->deadlyError = true;
         }
         else
         {
             // Set the variable in the index
             varIndex.setVariable(varName);
-            std::cout << "Declared variable: " << varName << std::endl;
+            // std::cout << "Declared variable: " << varName << std::endl;
             if (empty == false) {
                 // Set the variable in the stack dedicated index
                 varIndex.setVariableAffectedVaribleIndex(varName);
@@ -61,6 +61,10 @@ public:
         return &varIndex;
     }
     
+    bool getDeadlyError()
+    {
+        return this->deadlyError;
+    }
     virtual std::any visitProg(ifccParser::ProgContext *ctx)
     {
         // Loop through all core in context
