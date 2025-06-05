@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     openjdk-17-jdk
 
-RUN java -version
 
 RUN mkdir -p /root/antlr4-install \
     && cd /root/antlr4-install \
